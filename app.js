@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static("./public"));
 app.use(morgan("short"));
 
+// MySql connection function
 const getConnection = () => {
   return mysql.createConnection({
     host: "localhost",
@@ -18,6 +19,7 @@ const getConnection = () => {
   });
 };
 
+// Insert user into database
 app.post("/user_create", (req, res) => {
   const firstName = req.body.fname;
   const lastName = req.body.lname;
@@ -39,13 +41,12 @@ app.post("/user_create", (req, res) => {
   );
 });
 
+// fetching data using id from MySql
 app.get("/users/:id", (req, res) => {
   console.log("Fetching user with id " + req.params.id);
-  const connection = getConnection();
-
   const userId = req.params.id;
   const queryString = "SELECT * FROM users WHERE id = ?";
-  connection.query(queryString, [userId], (err, rows, fields) => {
+  getConnection().query(queryString, [userId], (err, rows, fields) => {
     if (err) {
       console.log(err);
       res.sendStatus(500);
@@ -54,12 +55,24 @@ app.get("/users/:id", (req, res) => {
     console.log("fetched users successfully !");
     res.json(rows);
   });
-  //res.end();
 });
-
+// retrive all users from MySql
 app.get("/users", (req, res) => {
-  let users = { firstName: "Rajkumar", lastName: "Patoliya" };
-  res.json(users);
+  const queryString = "SELECT * FROM users";
+  getConnection().query(queryString, (err, rows, fields) => {
+    if (err) {
+      console.log("Cannot retrive users" + err);
+      req.sendStatus(500);
+      return;
+    }
+    console.log("Users fetched successfully !");
+    res.json(rows);
+  });
+});
+// static data
+app.get("/user", (req, res) => {
+  let user = { firstName: "Rajkumar", lastName: "Patoliya" };
+  res.json(user);
 });
 
 // localhost:300
