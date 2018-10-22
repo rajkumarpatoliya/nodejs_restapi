@@ -15,64 +15,68 @@ const getConnection = () => {
     host: "localhost",
     user: "root",
     password: "rajkumar",
-    database: "users"
+    database: "MySchema"
   });
 };
 
 // Insert user into database
-app.post("/user_create", (req, res) => {
-  const firstName = req.body.fname;
-  const lastName = req.body.lname;
-  const queryString = "INSERT INTO users (fname, lname) VALUES (?, ?)";
+app.post("/movie", (req, res) => {
+  const name = req.body.name;
+  const director = req.body.director;
+  const year = req.body.year;
+  const hero = req.body.hero;
+  const heroine = req.body.heroine;
+  const queryString =
+    "INSERT INTO movie (name, director, year, hero, heroine) VALUES (?, ?, ?, ?, ?)";
 
   getConnection().query(
     queryString,
-    [firstName, lastName],
+    [name, director, year, hero, heroine],
     (err, results, fields) => {
       if (err) {
-        console.log("Failed to insert new user" + err);
+        console.log("Failed to insert new movie" + err);
         res.sendStatus(500);
         return;
       }
 
-      console.log("Inserted new user successfully with id " + results.insertId);
-      res.send("Inserted new user successfully with id " + results.insertId);
+      console.log(
+        "Inserted new movie successfully with id " + results.insertId
+      );
+      res.send("Inserted new movie successfully with id " + results.insertId);
       res.end();
     }
   );
 });
 
 // fetching data using id from MySql
-app.get("/users/:id", (req, res) => {
-  console.log("Fetching user with id " + req.params.id);
-  const userId = req.params.id;
-  const queryString = "SELECT * FROM users WHERE id = ?";
-  getConnection().query(queryString, [userId], (err, rows, fields) => {
+app.get("/movie/:id", (req, res) => {
+  console.log("Fetching movie with id " + req.params.id);
+  const movieId = req.params.id;
+  const queryString = "SELECT * FROM movie WHERE id = ?";
+  getConnection().query(queryString, [movieId], (err, rows, fields) => {
     if (err) {
       console.log(err);
       res.sendStatus(500);
       return;
     }
-    console.log("fetched users successfully !");
+    console.log("fetched movie successfully !");
     res.json(rows);
   });
 });
 
 // Refactoring code
 const router = express.Router();
-router.get("/messages", (req, res) => {
-  cnso;
-});
+router.get("/messages", (req, res) => {});
 // retrive all users from MySql
-app.get("/users", (req, res) => {
-  const queryString = "SELECT * FROM users";
+app.get("/movies", (req, res) => {
+  const queryString = "SELECT * FROM movie";
   getConnection().query(queryString, (err, rows, fields) => {
     if (err) {
-      console.log("Failed to query retrive users" + err);
+      console.log("Failed to query retrive movies" + err);
       req.sendStatus(500);
       return;
     }
-    console.log("Users fetched successfully !");
+    console.log("Movies fetched successfully !");
     res.json(rows);
   });
 });
