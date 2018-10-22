@@ -57,12 +57,18 @@ app.get("/users/:id", (req, res) => {
     res.json(rows);
   });
 });
+
+// Refactoring code
+const router = express.Router();
+router.get("/messages", (req, res) => {
+  cnso;
+});
 // retrive all users from MySql
 app.get("/users", (req, res) => {
   const queryString = "SELECT * FROM users";
   getConnection().query(queryString, (err, rows, fields) => {
     if (err) {
-      console.log("Cannot retrive users" + err);
+      console.log("Failed to query retrive users" + err);
       req.sendStatus(500);
       return;
     }
