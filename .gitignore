@@ -4,7 +4,10 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+<<<<<<< HEAD
 package-lock.json
+=======
+>>>>>>> 2d4b52fcd55936e701dd98e676a373db24d44f85
 
 # Runtime data
 pids
