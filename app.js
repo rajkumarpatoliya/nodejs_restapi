@@ -35,7 +35,8 @@ app.post("/user_create", (req, res) => {
         return;
       }
 
-      console.log("Inserted new user successfully");
+      console.log("Inserted new user successfully with id " + results.insertId);
+      res.send("Inserted new user successfully with id " + results.insertId);
       res.end();
     }
   );
